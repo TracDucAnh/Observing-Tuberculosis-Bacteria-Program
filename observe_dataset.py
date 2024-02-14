@@ -28,7 +28,7 @@ def get_average_imgs_size():
     print((sum(length)/len(length), sum(width)/len(width)))
     return (sum(length)/len(length), sum(width)/len(width))
 
-def get_average_size_of_Tuberculosis_and_extract_corrdinate_from():
+def get_average_size_of_Tuberculosis_and_extract_corrdinate_from_dataset():
     count_bacteria = []
     x_max = []
     x_min = []
