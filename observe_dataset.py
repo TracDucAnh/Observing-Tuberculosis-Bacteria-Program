@@ -28,7 +28,8 @@ def get_average_imgs_size():
     print((sum(length)/len(length), sum(width)/len(width)))
     return (sum(length)/len(length), sum(width)/len(width))
 
-def get_average_size_of_Tuberculosis():
+def get_average_size_of_Tuberculosis_and_extract_corrdinate_from():
+    count_bacteria = []
     x_max = []
     x_min = []
     y_max = []
@@ -41,12 +42,31 @@ def get_average_size_of_Tuberculosis():
         if path[-3:] == "xml":
             new_path = os.path.join(Tuberculosis, path)
             xml_file = open(new_path, mode="r")
+            coor_path_name = path[0:-4] + ".txt"
+            coor_path = os.path.join("Tuberculosis_coordinate", coor_path_name)
+            txt_file = open(coor_path, mode = "w")
             header = xml_file.readline()
+            count = 0
+            negative = False
             while header != "":
                 raw_string = header.replace(" ", "")
+                if "-" in raw_string:
+                    negative = True
+                    raw_string = raw_string.replace("-", "")
                 if raw_string[:9] in raw_string and raw_string[-8:] in raw_string and raw_string[9:-8].isnumeric():
-                    corr.append(int(raw_string[9:-8]))
+                    if (negative):
+                        corr.append(-int(raw_string[9:-8]))
+                        txt_file.writelines("-"+raw_string[9:-8]+"\n")
+                        negative = False
+                    else:
+                        corr.append(int(raw_string[9:-8]))
+                        txt_file.writelines(raw_string[9:-8]+"\n")
+                if "TBbacillus" in header:
+                    count+=1
                 header = xml_file.readline()
+            count_bacteria.append(count)
+            xml_file.close()
+            txt_file.close()
     i = 0
     while i < len(corr):
         x_min.append(corr[i])
@@ -60,4 +80,6 @@ def get_average_size_of_Tuberculosis():
     y_max = np.array(y_max)
     width = sum(x_max - x_min)/len(x_max - x_min)
     length = sum(y_max - y_min)/len(y_max - y_min)
-    return width, length, (math.sqrt(width**2+length**2))
+    print("successfully extract bacteria's coordinates")
+    return width, length, count_bacteria
+    
