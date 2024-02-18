@@ -144,4 +144,3 @@ def crop_bateria_images():
             if index >= 4947:
                 print("successfully crop bacteria and resize, ready for training the model")
                 return 0
-crop_bateria_images()
