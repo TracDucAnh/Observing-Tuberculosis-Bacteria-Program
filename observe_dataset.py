@@ -3,6 +3,7 @@ import sys
 import cv2
 import numpy as np
 import math
+from random import randint
 
 def count_imgs():
     current_path = os.getcwd()
@@ -84,3 +85,63 @@ def get_average_size_of_Tuberculosis_and_extract_corrdinate_from_dataset():
     return width, length, count_bacteria
     
 # Crop bacteria images
+
+def crop_bateria_images():
+    index = 0
+    current = os.getcwd()
+    txt_folder_path = os.path.join(current,"Tuberculosis_coordinates")
+    img_folder_path = os.path.join(current, "dataset", "tuberculosis-phonecamera")
+    for txt in os.listdir(txt_folder_path):
+        img_name = txt[:-4]+".jpg"
+        img_path = os.path.join(img_folder_path, img_name)
+        img = cv2.imread(img_path)
+        txt = os.path.join(txt_folder_path, txt)
+        txt_file = open(txt, mode="r")
+        header = txt_file.readline()
+        coor = []
+        while header != "":
+            coor.append(int(header))
+            header = txt_file.readline()
+        i = 0
+        while i < len(coor):
+            crop = img[coor[i+1]:coor[i+3], coor[i]:coor[i+2]]
+            try:        
+                crop = cv2.resize(crop, (100,100), interpolation = cv2.INTER_AREA)
+            except:
+                continue
+            name = "Tuberculosis" + "_" + str(index) + ".jpg"
+
+            name = os.path.join("train_test_data", name)
+
+            cv2.imwrite(name, crop)
+
+            start_x = randint(0, 1632-100)
+
+            while start_x in coor:
+                start_x = randint(0, 1632-100)
+
+            end_x = start_x + 100
+
+            start_y = randint(0, 1224-100)
+
+            while start_y in coor:
+                start_y = randint(0, 1224-100)
+
+            end_y = start_y + 100
+
+            random_crop = img[start_y:end_y, start_x:end_x]
+
+            name = "None" + "_" +  str(index) + ".jpg"
+
+            name = os.path.join("train_test_data", name)
+
+            cv2.imwrite(name, random_crop)
+
+            i += 4  
+
+            index += 1
+
+            if index >= 4947:
+                print("successfully crop bacteria and resize, ready for training the model")
+                return 0
+crop_bateria_images()
