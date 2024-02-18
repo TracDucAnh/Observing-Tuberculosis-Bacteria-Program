@@ -4,7 +4,7 @@ from observe_dataset import get_average_size_of_Tuberculosis_and_extract_corrdin
 
 width, length, count_bacteria = get_average_size_of_Tuberculosis_and_extract_corrdinate_from_dataset()
 
-txt_folder = os.path.join("Tuberculosis_coordinate")
+txt_folder = os.path.join("Tuberculosis_coordinates")
 for txt in os.listdir(txt_folder):
     tuberculosis_coor = []
     txt_file_path = os.path.join(txt_folder, txt)

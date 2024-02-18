@@ -43,7 +43,7 @@ def get_average_size_of_Tuberculosis_and_extract_corrdinate_from_dataset():
             new_path = os.path.join(Tuberculosis, path)
             xml_file = open(new_path, mode="r")
             coor_path_name = path[0:-4] + ".txt"
-            coor_path = os.path.join("Tuberculosis_coordinate", coor_path_name)
+            coor_path = os.path.join("Tuberculosis_coordinates", coor_path_name)
             txt_file = open(coor_path, mode = "w")
             header = xml_file.readline()
             count = 0
@@ -83,3 +83,4 @@ def get_average_size_of_Tuberculosis_and_extract_corrdinate_from_dataset():
     print("successfully extract bacteria's coordinates")
     return width, length, count_bacteria
     
+# Crop bacteria images
