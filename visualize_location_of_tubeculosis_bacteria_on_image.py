@@ -3,7 +3,7 @@ import cv2
 from observe_dataset import get_average_size_of_Tuberculosis_and_extract_corrdinate_from_dataset, crop_bateria_images
 
 width, length, count_bacteria = get_average_size_of_Tuberculosis_and_extract_corrdinate_from_dataset()
-crop_bateria_images()
+
 txt_folder = os.path.join("Tuberculosis_coordinates")
 for txt in os.listdir(txt_folder):
     tuberculosis_coor = []
@@ -32,3 +32,4 @@ for txt in os.listdir(txt_folder):
     cv2.imwrite(new_path, image)
     
 print("successfully locate tuberculosis bacteria on dataset's images")
+crop_bateria_images()
