@@ -1,9 +1,14 @@
 import os
 import cv2
 from observe_dataset import get_average_size_of_Tuberculosis_and_extract_corrdinate_from_dataset, crop_bateria_images
+import time
 
+start = time.time()
 width, length, count_bacteria = get_average_size_of_Tuberculosis_and_extract_corrdinate_from_dataset()
+end = time.time()
+print("It takes", end-start, "s to complete")
 
+start = time.time()
 txt_folder = os.path.join("Tuberculosis_coordinates")
 for txt in os.listdir(txt_folder):
     tuberculosis_coor = []
@@ -30,6 +35,11 @@ for txt in os.listdir(txt_folder):
     new_path = os.path.join("sample", txt[0:-4]+"_"+str(len(tuberculosis_coor)/4)+".jpg")
     
     cv2.imwrite(new_path, image)
-    
+end = time.time()
 print("successfully locate tuberculosis bacteria on dataset's images")
+print("It takes", end-start, "s to complete")
+
+start = time.time()
 crop_bateria_images()
+end = time.time()
+print("It takes", end-start, "s to complete")

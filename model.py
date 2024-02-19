@@ -4,6 +4,7 @@ import os
 import sys
 import tensorflow as tf 
 from sklearn.model_selection import train_test_split
+import time
 
 IMG_HEIGHT = 100
 IMG_WIDTH = 100
@@ -15,6 +16,7 @@ def main():
     if len(sys.argv) not in [2, 3]:
         sys.exit("Usage: python model.py train_test_data [model.h5]")
 
+    start = time.time()
     img, label = load_data(sys.argv[1])
 
     img = np.array(img)
@@ -34,11 +36,21 @@ def main():
     print("x_test shape: ", x_test.shape)
     print("y_test shape: ", y_test.shape)
 
+    end = time.time()
+
+    print("It takes", end-start, "s to prepare the data for training")
+
+    start = time.time()
+
     model = get_model()
 
     model.fit(x_train, y_train, epochs = EPOCHS)
 
     model.evaluate(x_test, y_test, verbose = 2)
+
+    end = time.time()
+
+    print("It takes", end-start, "s to train the model for", EPOCHS, "epochs")
 
     if len(sys.argv) == 3:
         filename = sys.argv[2]
