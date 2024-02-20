@@ -1,6 +1,6 @@
 import os
 import cv2
-from observe_dataset import get_average_size_of_Tuberculosis_and_extract_corrdinate_from_dataset, crop_bateria_images
+from observe_dataset import get_average_size_of_Tuberculosis_and_extract_corrdinate_from_dataset, crop_bateria_images, crop_environment_images
 import time
 
 start = time.time()
@@ -41,5 +41,6 @@ print("It takes", end-start, "s to complete")
 
 start = time.time()
 crop_bateria_images()
+crop_environment_images()
 end = time.time()
 print("It takes", end-start, "s to complete")
