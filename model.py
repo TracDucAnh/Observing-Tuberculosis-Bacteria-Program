@@ -8,9 +8,9 @@ import time
 
 IMG_HEIGHT = 100
 IMG_WIDTH = 100
-EPOCHS = 10
-TEST_SIZE = 0.3
-RANDOM_STATE = 64
+EPOCHS = 15
+TEST_SIZE = 0.4
+RANDOM_STATE = 10
 
 def main():
     if len(sys.argv) not in [2, 3]:
@@ -58,32 +58,19 @@ def main():
         print(f"Model saved to {filename}")
 
 def load_data(datadir):
-    current = os.getcwd()
-    data_folder = os.path.join(current, datadir)
-    try:
-        os.listdir(data_folder)
-    except:
-        sys.exit("The data folder for trainning does not exist")
-    if datadir != "train_test_data":
-        sys.exit("Usage: python model.py train_test_data [model.h5]")
-    img = []
-    label = []
-
-    for image in os.listdir(data_folder):
-        path = os.path.join(data_folder, image)
-        pic = cv2.imread(path,cv2.IMREAD_COLOR)
-        img.append(pic)
-        if image[:4] == "None":
-            label.append(0)
-        elif image[:4] == "Tube":
-            label.append(1)
-    print("successfully loaded images")
-    return img, label
+    # TODO
+    pass
 
 def get_model():
     model = tf.keras.models.Sequential([
     tf.keras.layers.Conv2D(
-        30, (3, 3), activation="relu", input_shape=(IMG_HEIGHT, IMG_WIDTH, 3)
+        70, (3, 3), activation="relu", input_shape=(IMG_HEIGHT, IMG_WIDTH, 3)
+    ),
+
+    tf.keras.layers.MaxPooling2D(pool_size=(3, 3)),
+
+    tf.keras.layers.Conv2D(
+        50, (3, 3), activation="relu", input_shape=(IMG_HEIGHT, IMG_WIDTH, 3)
     ),
 
     tf.keras.layers.MaxPooling2D(pool_size=(3, 3)),
@@ -93,6 +80,7 @@ def get_model():
     ),
 
     tf.keras.layers.MaxPooling2D(pool_size=(3, 3)),
+
 
     tf.keras.layers.Flatten(),
 
@@ -102,11 +90,11 @@ def get_model():
 
     tf.keras.layers.Dense(100, activation="relu"),
 
-    tf.keras.layers.Dropout(0.2),
+    tf.keras.layers.Dropout(0.3),
 
     tf.keras.layers.Dense(70, activation = "relu"),
 
-    tf.keras.layers.Dropout(0.2),
+    tf.keras.layers.Dropout(0.3),
 
     tf.keras.layers.Dense(2, activation="softmax")
     ])
