@@ -6,6 +6,9 @@ import math
 from random import randint
 import time
 
+IMG_HEIGHT = 1224
+IMG_WIDTH = 1632
+
 def count_imgs():
     current_path = os.getcwd()
     dataset = os.path.join(current_path, "dataset")
@@ -87,6 +90,7 @@ def get_average_size_of_Tuberculosis_and_extract_corrdinate_from_dataset():
     
 def crop_bacteria_images():
     # crop bactreia images
+    print("Start croping images of bacteria...")
     print("Croping bacteria from images")
     start = time.time()
     current = os.getcwd()
@@ -120,7 +124,37 @@ def crop_bacteria_images():
                 except:
                     pass
     end = time.time()
+    print(f"successfully crop {count} files of bacteria samples")
     print("It takes", end - start, "s to complete")
 
-def crop_environment_images():
-    pass
+def crop_environment_images(percentage):
+    print("Start croping images of environments...")
+    start = time.time()
+    current = os.getcwd()
+    img_folder = os.path.join(current, "removed_bacteria_out_from_images")
+    index = 0
+    for img_file in os.listdir(img_folder):
+        img_file = os.path.join(img_folder, img_file)
+        img = cv2.imread(img_file)
+        x = np.round(np.linspace(0, IMG_WIDTH, int(IMG_WIDTH/100)))
+        y = np.round(np.linspace(0, IMG_HEIGHT, int(IMG_HEIGHT/100)))
+        grid = len(x)*len(y)
+        crop_number = int(grid*percentage)
+        count = 0
+        for i in range(len(y)-1):
+            if count < crop_number:
+                for j in range(len(x)-1):
+                    if np.zeros(3, dtype=int) in img[int(y[i]):int(y[i+1]), int(x[j]):int(x[j+1])]:
+                        pass
+                    else:
+                        crop = img[int(y[i]):int(y[i+1]), int(x[j]):int(x[j+1])]
+                        name = "none_"+str(index)+".jpg"
+                        save_path = os.path.join("environment_set", name)
+                        cv2.imwrite(save_path, crop)
+                        count += 1
+                        index += 1
+            else:
+                break
+    end = time.time()
+    print(f"successfully crop {index} files of environment samples with {percentage*100}% per images")
+    print(f"It takes {end - start}s to complete")
